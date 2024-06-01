@@ -3,7 +3,7 @@ import 'package:flutter_matriculasapp/pages/matricula_page.dart';
 
 void main() {
    runApp(MaterialApp(
-    home: MatriculaPage(),
+    home: MatriculaModelPage(),
     debugShowCheckedModeBanner: false,
   ));
 }

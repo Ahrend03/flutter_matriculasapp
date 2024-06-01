@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_matriculasapp/models/carrera_model.dart';
+import 'package:flutter_matriculasapp/models/institucion_model.dart';
 import 'package:flutter_matriculasapp/models/matricula_model.dart';
-import 'package:flutter_matriculasapp/pages/alumno_card.dart';
+import 'package:flutter_matriculasapp/pages/item_card.dart';
 import 'package:flutter_matriculasapp/models/alumno_model.dart';
 
-class MatriculaPage extends StatefulWidget{
+class MatriculaModelPage extends StatefulWidget{
   @override
-  State<MatriculaPage> createState() => _MatriculaPageState();
+  State<MatriculaModelPage> createState() => _MatriculaModelPageState();
 }
 
-class _MatriculaPageState extends State<MatriculaPage> {
-  Matricula nuevomatricola = Matricula(alumno: Alumno("Jeremy", "jeremy@gmail.com", "45858565"),
-  fecha: "26/05/2024",carrera: Carrera(titulo: "Ing. Sistemas",duracion: "5años"));
+class _MatriculaModelPageState extends State<MatriculaModelPage> {
+  MatriculaModel nuevomatricola = MatriculaModel(alumno: AlumnoModel("Jeremy", "jeremy@gmail.com", "45858565"),
+  fecha: "26/05/2024",carrera: CarreraModel(titulo: "Ing. Sistemas",duracion: "5años"));
 
-  List<Alumno> alumnoList = [
-    Alumno("Juanito", "juanito@gmail.com", "123456789"),
-    Alumno("Carlos", "carlos@gmail.com", "85859858"),
-    Alumno("Ana", "ana@gmail.com", "85859595")
+  List<AlumnoModel> alumnoList = [
+    AlumnoModel("Juanito", "juanito@gmail.com", "123456789"),
+    AlumnoModel("Carlos", "carlos@gmail.com", "85859858"),
+    AlumnoModel("Ana", "ana@gmail.com", "85859595")
+  ];
+  
+
+  List<InstitucionModel> institucion = [
+    InstitucionModel(nombre: "av123", 
+    direccion: "ica", ruc: "12345678912", telefono: "2555", matriculas: [])
   ];
 
   List<Widget> tilesList = [];
 
   generateListTile(){
     alumnoList.forEach((element){
-      tilesList.add(AlumnoCard(name: element.nombre, institucion: "tecsup"));
+      tilesList.add(ItemCard(name: element.nombre, institucion: "tecsup",funciondel: (){},funcionedit: (){},));
     });
   }
 
@@ -33,22 +40,40 @@ class _MatriculaPageState extends State<MatriculaPage> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      floatingActionButton: FloatingActionButton
-      (onPressed: (){
-        Alumno auxAlumno = Alumno("Mario", "mario@gmail.com", "85458565");
-        alumnoList.add(auxAlumno);
-        generateListTile();
+      floatingActionButton: 
+        FloatingActionButton(
+          onPressed: (){
+        AlumnoModel auxAlumnoModel = AlumnoModel("Mario", "mario@gmail.com", "85458565");
+        alumnoList.add(auxAlumnoModel);
+        //tilesList = [];
+       // generateListTile();
         setState(() { });
       },
-      child: Icon(Icons.add),),
-      appBar: AppBar(title: Text("Matricula"),
+      child:
+      Icon(Icons.add),),
+      appBar: AppBar(title: Text("MatriculaModel"),
       ),
-      body: Column(children: [Text("Mis Alumnos"),
-      ...tilesList,
-      ...alumnoList.map((mandarina)=> AlumnoCard(name: mandarina.nombre, institucion: "PUCP")
+      body:
+      Column(
+        children: [
+          
+          Text("NOMBRE DE INSTITUCION"),
+      //...tilesList,
+      ...alumnoList.map((alumnoseleccionadp)=> ItemCard(name: alumnoseleccionadp.nombre, 
+      institucion: "PUCP",funciondel: (){
+        alumnoList.remove(alumnoseleccionadp);
+        print(alumnoseleccionadp.nombre);
+        setState(() {
+        });
+        },funcionedit: (){
+        alumnoList[alumnoList.indexOf(alumnoseleccionadp)] = AlumnoModel("Jesus", "calos@gmail,com", "4585222");
+          setState(() {
+          });
+        },)
       ).toList(),
       ],
       ),
